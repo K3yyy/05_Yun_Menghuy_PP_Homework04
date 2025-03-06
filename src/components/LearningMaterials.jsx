@@ -1,6 +1,6 @@
 import { useState } from "react";
 import FilterComponent from "./Filter";
-import HtmlComponent from "./SubjectComponent";
+import SubjectComponent from "./SubjectComponent";
 import { learningMaterials } from "../data/learningMaterials";
 
 export default function LearningMaterialsComponent() {
@@ -27,7 +27,7 @@ export default function LearningMaterialsComponent() {
 
       <div>
         {sortedMaterials.map((item) => (
-          <HtmlComponent
+          <SubjectComponent
             key={item.id}
             image={item.image}
             title={item.title}

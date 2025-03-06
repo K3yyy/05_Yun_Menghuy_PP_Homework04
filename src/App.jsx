@@ -31,11 +31,10 @@ function App() {
                   <Dashboard key={item.id} {...item} />
                 ))}
               </div>
-              <div className="flex justify-between">
+              <div className="flex justify-between ">
                 <Assignments />
-                <AddNew />
               </div>
-              <div className="w-[100%] h-[100%]  flex-wrap flex content-start gap-[20px] justify-start  ">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {cardData.map((item) => (
                   <Card
                     key={item.id}

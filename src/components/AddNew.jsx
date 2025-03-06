@@ -1,47 +1,52 @@
 import { Plus } from "lucide-react";
-import { useState } from "react";
+import React, { useState } from "react";
 
-export default function AddNew({ onAddProject }) {
-  const [title, setTitle] = useState("");
-  const [date, setDate] = useState("");
-  const [description, setDescription] = useState("");
-  const [selectedProgress, setSelectedProgress] = useState(null);
+export default function AddNewProjectComponent({ data, setData }) {
+  const [newData, setNewData] = useState({
+    title: "",
+    dueDate: "",
+    description: "",
+    progress: "",
+  });
 
-  const handleProgressChange = (e) => {
-    setSelectedProgress(e.target.value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setNewData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newProject = {
-      title,
-      date,
-      description,
-      progress: selectedProgress,
-      timeLeft: "2 days", // Example value, you can calculate dynamically
-    };
-    onAddProject(newProject);
-    setTitle("");
-    setDate("");
-    setDescription("");
-    setSelectedProgress(null);
-  };
+    if (!newData.title || !newData.description || !newData.progress) {
+      alert("Please fill in all fields!");
+      return;
+    }
 
-  const option100 =
-    selectedProgress !== "100" ? <option value="100">100</option> : null;
-  const option75 =
-    selectedProgress !== "75" ? <option value="75">75</option> : null;
-  const option50 =
-    selectedProgress !== "50" ? <option value="50">50</option> : null;
-  const option25 =
-    selectedProgress !== "25" ? <option value="25">25</option> : null;
+    const today = new Date();
+    const selectedDate = new Date(newData.dueDate);
+    if (selectedDate < today) {
+      alert("Wrong time");
+      return;
+    }
+
+    setData((prevData) => [...prevData, { ...newData, id: Date.now() }]);
+
+    setNewData({
+      title: "",
+      dueDate: "",
+      description: "",
+      progress: "",
+    });
+  };
 
   return (
     <div>
       <button
         data-modal-target="crud-modal"
         data-modal-toggle="crud-modal"
-        className="bg-custom-sky-blue border-2 hover:bg-custom-sky-blue-500 focus:ring-3 focus:outline-none focus:ring-custom-sky-blue-500 font-medium rounded-lg text-sm px-4 py-2.5 text-center dark:bg-custom-sky-blue-500 dark:hover:bg-custom-sky-blue-500 dark:focus:ring-custom-sky-blue-500 flex items-center gap-2"
+        className="bg-custom-sky-blue hover:bg-custom-sky-blue-500 focus:ring-3 focus:outline-none focus:ring-custom-sky-blue-500 font-medium rounded-lg text-sm px-3 py-2.5 text-center dark:bg-custom-sky-blue-500 dark:hover:bg-custom-sky-blue-500 dark:focus:ring-custom-sky-blue-500 flex items-center gap-2"
         type="button"
       >
         <Plus size={22} /> <span className="text-base">New Project</span>
@@ -49,11 +54,11 @@ export default function AddNew({ onAddProject }) {
 
       <div
         id="crud-modal"
-        tabIndex="1"
+        tabIndex="-1"
         aria-hidden="true"
         className="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full"
       >
-        <div className="relative p-4 w-full max-w-md sm:max-w-lg md:max-w-xl lg:max-w-2xl max-h-full">
+        <div className="relative p-4 w-full max-w-md max-h-full">
           <div className="relative bg-white rounded-2xl shadow-sm dark:bg-gray-700">
             <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600 border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
@@ -82,23 +87,23 @@ export default function AddNew({ onAddProject }) {
                 <span className="sr-only">Close modal</span>
               </button>
             </div>
-            <form onSubmit={handleSubmit} className="p-4 md:p-5">
+            <form className="p-4 md:p-5" onSubmit={handleSubmit}>
               <div className="grid gap-4 mb-4 grid-cols-2">
                 <div className="col-span-2">
                   <label
-                    htmlFor="projectName"
+                    htmlFor="title"
                     className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                     Project Name
                   </label>
                   <input
                     type="text"
-                    name="projectName"
-                    id="projectName"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
+                    onChange={handleChange}
+                    name="title"
+                    id="title"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                     placeholder="Type Project Name"
+                    value={newData.title}
                   />
                 </div>
 
@@ -111,11 +116,11 @@ export default function AddNew({ onAddProject }) {
                   </label>
                   <input
                     type="date"
+                    onChange={handleChange}
                     name="dueDate"
                     id="dueDate"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    value={newData.dueDate}
                   />
                 </div>
 
@@ -128,17 +133,16 @@ export default function AddNew({ onAddProject }) {
                   </label>
                   <select
                     id="progress"
-                    value={selectedProgress}
-                    onChange={handleProgressChange}
+                    onChange={handleChange}
+                    name="progress"
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                    value={newData.progress}
                   >
-                    {selectedProgress === null && (
-                      <option value="">Select Progress</option>
-                    )}
-                    {option100}
-                    {option75}
-                    {option50}
-                    {option25}
+                    <option defaultValue="">Select Progress</option>
+                    <option value="100">100</option>
+                    <option value="75">75</option>
+                    <option value="50">50</option>
+                    <option value="25">25</option>
                   </select>
                 </div>
 
@@ -151,11 +155,12 @@ export default function AddNew({ onAddProject }) {
                   </label>
                   <textarea
                     id="description"
+                    onChange={handleChange}
+                    name="description"
                     rows="4"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
                     className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Write project description here"
+                    placeholder="Write product description here"
+                    value={newData.description}
                   ></textarea>
                 </div>
               </div>
