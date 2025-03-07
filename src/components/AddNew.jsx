@@ -19,9 +19,13 @@ export default function AddNewProjectComponent({ data, setData }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!newData.title || !newData.description || !newData.progress) {
+    if (!newData.title || !newData.progress) {
       alert("Please fill in all fields!");
       return;
+    }
+    if (!newData.description) {
+      newData.description =
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
     }
 
     const today = new Date();
@@ -160,7 +164,7 @@ export default function AddNewProjectComponent({ data, setData }) {
                     rows="4"
                     className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Write product description here"
-                    value={newData.description}
+                    value={newData.descriptio}
                   ></textarea>
                 </div>
               </div>

@@ -17,7 +17,7 @@ export default function AssignmentsComponent() {
             title={add.title}
             description={add.description}
             progress={add.progress}
-            timeLeft={add.timeLeft}
+            timeLeft={2}
           />
         ))}
       </div>

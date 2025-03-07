@@ -19,20 +19,20 @@ export const cardData = [
   },
   {
     id: 3,
-    date: "Feb 20, 2025",
-    title: "JavaScript Algorithms",
-    description:
-      "Solve various JavaScript algorithms to improve your coding skills.",
-    progress: 75,
-    timeLeft: " 5days",
-  },
-  {
-    id: 4,
     date: "Mar 1, 2025",
     title: "ReactJS Basics",
     description:
       "Understand the fundamentals of ReactJS and build small applications.",
     progress: 25,
     timeLeft: "7days",
+  },
+  {
+    id: 4,
+    date: "Feb 20, 2025",
+    title: "JavaScript Algorithms",
+    description:
+      "Solve various JavaScript algorithms to improve your coding skills.",
+    progress: 75,
+    timeLeft: " 5days",
   },
 ];
